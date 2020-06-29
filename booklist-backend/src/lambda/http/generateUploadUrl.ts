@@ -2,7 +2,7 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import { updateBookImageUrl } from '../../businessLogic/books'
-//import { getUserId } from '../utils'
+import { getUserId } from '../utils'
 const AWS = require('aws-sdk')
 const AWSXRay = require('aws-xray-sdk')
 
@@ -17,8 +17,7 @@ const urlExpiration = process.env.SIGNED_URL_EXPIRATION
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const bookId = event.pathParameters.bookId
-  //const userId = getUserId(event)
-  const userId = "abc123"
+  const userId = getUserId(event)
   const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${bookId}`
 
   const url = getUploadUrl(bookId)
