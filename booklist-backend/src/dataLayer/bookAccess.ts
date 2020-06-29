@@ -9,7 +9,7 @@ import { BookItem } from "../models/BookItem";
 export class BookAccess {
     constructor (
         private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient(),
-        private readonly todosTable = process.env.BOOKS_TABLE ) {
+        private readonly booksTable = process.env.BOOKS_TABLE ) {
     }
 
     async getAllTodos(userId: string): Promise<BookItem[]> {
@@ -17,7 +17,7 @@ export class BookAccess {
 
         const result = await this.docClient
         .query({
-            TableName: this.todosTable,
+            TableName: this.booksTable,
             IndexName: 'BookIdIndex',
             KeyConditionExpression: 'userId = :userId',
             ExpressionAttributeValues: {
@@ -28,5 +28,16 @@ export class BookAccess {
 
         const items = result.Items
         return items as BookItem[]
+    }
+
+    async createBook(book: BookItem): Promise<BookItem> {
+        console.log('Creating book')
+
+        await this.docClient.put({
+            TableName: this.booksTable,
+            Item: book
+        }).promise()
+
+        return book
     }
 }

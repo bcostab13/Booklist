@@ -49,6 +49,28 @@ functions:
           - "xray:PutTelemetryRecords"
         Resource:
           - "*"
+  
+  CreateTodo:
+    handler: src/lambda/http/createBook.handler
+    events:
+      - http:
+          method: post
+          path: books
+          request:
+            schema:
+              application/json: ${file(models/create-book-request.json)}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"      
 
 resources:
   Resources:
