@@ -4,13 +4,12 @@ import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } f
 
 import { UpdateBookRequest } from '../../requests/UpdateBookRequest'
 import { updateBook } from '../../businessLogic/books'
-//import { getUserId } from '../utils'
+import { getUserId } from '../utils'
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const bookId = event.pathParameters.bookId
   const updatedBook: UpdateBookRequest = JSON.parse(event.body)
-  //const userId = getUserId(event)
-  const userId = "abc123"
+  const userId = getUserId(event)
 
   await updateBook(userId, bookId, updatedBook)
 
