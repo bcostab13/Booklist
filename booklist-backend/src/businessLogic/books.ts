@@ -47,3 +47,8 @@ export async function updateBook(userId: string, bookId: string, updatedBook: Up
     logger.info('Update book:' + bookId)
     return bookAccess.updateBook(userId, bookId, updatedBook)
 }
+
+export async function updateBookImageUrl(userId: string, bookId: string, attachmentUrl: string): Promise<BookItem[]> {
+    logger.info('Update todo url:' + bookId)
+    return bookAccess.updateBookImageUrl(userId, bookId, attachmentUrl)
+}
