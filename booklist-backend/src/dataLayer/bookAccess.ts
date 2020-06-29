@@ -83,4 +83,24 @@ export class BookAccess {
         const items = result.$response.data
         return items as BookItem[]        
     }
+
+    async updateBookImageUrl(userId:string, bookId:string, attachmentUrl: string) {
+        console.log('Updating book')
+
+        const result = await this.docClient.update({
+            TableName:this.booksTable,
+            Key:{
+                "userId": userId,
+                "bookId": bookId
+            },
+            UpdateExpression: "set coverUrl = :atu",
+            ExpressionAttributeValues:{
+                ":atu": attachmentUrl
+            },
+            ReturnValues:"UPDATED_NEW"
+        }).promise()
+
+        const items = result.$response.data
+        return items as BookItem[]        
+    }
 }
