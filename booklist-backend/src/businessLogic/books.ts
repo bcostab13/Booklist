@@ -5,7 +5,7 @@ import { BookItem } from '../models/BookItem'
 import { BookAccess } from '../dataLayer/bookAccess'
 //import { getUserId } from '../lambda/utils'
 //import { APIGatewayProxyEvent } from 'aws-lambda'
-//import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateBookRequest } from '../requests/UpdateBookRequest'
 import { createLogger } from '../utils/logger'
 
 const bookAccess = new BookAccess()
@@ -36,4 +36,14 @@ export async function createBook(
         author: createBookRequest.author,
         category: createBookRequest.category
     })
+}
+
+export async function deleteBook(bookId: string, userId: string): Promise<string> {
+    logger.info('Delete book:' + bookId)
+    return bookAccess.deleteBook(bookId, userId)
+}
+
+export async function updateBook(userId: string, bookId: string, updatedBook: UpdateBookRequest): Promise<BookItem[]> {
+    logger.info('Update book:' + bookId)
+    return bookAccess.updateBook(userId, bookId, updatedBook)
 }
